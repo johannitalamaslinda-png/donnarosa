@@ -99,7 +99,7 @@ async def main():
     app.add_handler(CommandHandler("costototal", costo_total))
     app.add_handler(CommandHandler("alertas", alertas))
     print("Bot corriendo...")
-    await app.run_polling()
+    await app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
     asyncio.run(main())
