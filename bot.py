@@ -1,10 +1,9 @@
-import os
+import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 TOKEN = "8868701435:AAHTWf6b5wvmP3wN1qlFClFC6ycs7dMrmNs"
 
-# Inventario inicial
 inventario = {
     1: {"nombre": "Peras", "precio": 4000, "cantidad": 65, "cantidad_inicial": 65},
     2: {"nombre": "Limones", "precio": 1500, "cantidad": 25, "cantidad_inicial": 25},
@@ -90,14 +89,17 @@ async def alertas(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg = "✅ Todos los productos tienen stock suficiente"
     await update.message.reply_text(msg, parse_mode="Markdown")
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("inventario", inventario_cmd))
-app.add_handler(CommandHandler("insertar", insertar))
-app.add_handler(CommandHandler("actualizar", actualizar))
-app.add_handler(CommandHandler("borrar", borrar))
-app.add_handler(CommandHandler("costototal", costo_total))
-app.add_handler(CommandHandler("alertas", alertas))
+async def main():
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("inventario", inventario_cmd))
+    app.add_handler(CommandHandler("insertar", insertar))
+    app.add_handler(CommandHandler("actualizar", actualizar))
+    app.add_handler(CommandHandler("borrar", borrar))
+    app.add_handler(CommandHandler("costototal", costo_total))
+    app.add_handler(CommandHandler("alertas", alertas))
+    print("Bot corriendo...")
+    await app.run_polling()
 
-print("Bot corriendo...")
-app.run_polling()
+if __name__ == "__main__":
+    asyncio.run(main())
